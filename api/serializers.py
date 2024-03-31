@@ -1,7 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from api.models import CustomUser, Message, Chat
+from api.models import CustomUser, Message, Chat, ChatMember
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -31,12 +31,22 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
 
+
 class MessageSerializer(serializers.ModelSerializer):
     class Meta():
         model = Message
         fields = '__all__'
 
+
 class ChatSerializer(serializers.ModelSerializer):
     class Meta():
         model = Chat
         fields = '__all__'
+
+
+class ChatMemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChatMember
+        fields = '__all__'
+
