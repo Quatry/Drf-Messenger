@@ -1,9 +1,12 @@
 import uuid
+from datetime import datetime
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.cache import cache
 
+from socialnet import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -64,6 +67,21 @@ class StatusUser(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=CHOICES)
 
+    def __str__(self):
+        return self.user.username
+
+    def last_seen(self):
+        return cache.get('last_seen_%s' % self.user.username)
+
+    def online(self):
+        if self.last_seen():
+            now = datetime.datetime.now()
+            if now > (self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT)):
+                return False
+            else:
+                return True
+        else:
+            return False
 
 class Chat(models.Model):
     CHOICES = [
