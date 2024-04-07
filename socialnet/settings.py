@@ -62,7 +62,7 @@ ROOT_URLCONF = 'socialnet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,  'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'api.CustomUser'
 
 USER_ONLINE_TIMEOUT = 20
 
-USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
+USER_LASTSEEN_TIMEOUT = 20
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
@@ -143,7 +143,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:8000',
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

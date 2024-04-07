@@ -19,6 +19,7 @@ class ActiveUserMiddleware(JWTAuthentication):
             current_user = request.user
             user_cache_key = 'last_seen_%s' % current_user.username
             cache.set(user_cache_key, now, settings.USER_LASTSEEN_TIMEOUT)
+            print(cache.get(user_cache_key),111)
         else:
             last_seen = cache.get('status')
             if last_seen and (now - last_seen) > timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
@@ -29,5 +30,4 @@ class ActiveUserMiddleware(JWTAuthentication):
                     pass
             else:
                 cache.set('status', now, settings.USER_LASTSEEN_TIMEOUT)
-        print(cache.get(user_cache_key))
         return response
