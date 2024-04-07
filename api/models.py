@@ -41,6 +41,8 @@ class CustomUserManager(BaseUserManager):
         user.save()
 
         return user
+
+
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=30, unique=True, null=False)
@@ -57,6 +59,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         """ Строковое представление модели (отображается в консоли) """
         return self.username
+
 
 class StatusUser(models.Model):
     CHOICES = [
@@ -82,6 +85,7 @@ class StatusUser(models.Model):
                 return True
         else:
             return False
+
 
 class Chat(models.Model):
     CHOICES = [

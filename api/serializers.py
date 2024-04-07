@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from api.models import CustomUser, Message, Chat, ChatMember
+from api.models import CustomUser, Message, Chat, ChatMember, StatusUser
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -11,6 +11,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         return token
+
+
+class CustomUserSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomUser
+        fields = ''
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -57,3 +63,15 @@ class ChatMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatMember
         fields = '__all__'
+
+
+class StatusUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusUser
+        fields = '__all__'
+
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password']
