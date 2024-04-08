@@ -5,7 +5,7 @@ DrfMessenger - это REST API мессенджер, реализованный 
 ## Установка и запуск
 Для установки и запуска проекта выполните следующие шаги:
 
-1. ```git clone https://github.com/quatry/Drf-Messenger.git```
+1. ```git clone https://github.com/Quatry/Drf-Messenger.git```
 2. ```pip install -r requirements.txt```
 3. ```python manage.py migrate```
 4. ```python manage.py runserver```
