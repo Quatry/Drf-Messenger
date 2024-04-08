@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'api.middleware.ActiveUserMiddleware',
+    'api.users.middleware.ActiveUserMiddleware',
 ]
 
 ROOT_URLCONF = 'socialnet.urls'
