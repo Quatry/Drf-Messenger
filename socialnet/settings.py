@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'api.CustomUser'
 
 USER_ONLINE_TIMEOUT = 20
 
-USER_LASTSEEN_TIMEOUT = 20
+USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 

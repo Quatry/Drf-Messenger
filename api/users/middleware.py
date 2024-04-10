@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 
 from django.core.cache import cache
 from django.conf import settings
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
-class ActiveUserMiddleware(JWTAuthentication):
+class ActiveUserMiddleware:
+    """
+    Middleware отслеживающий когда пользователь был активен
+    """
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -15,14 +17,4 @@ class ActiveUserMiddleware(JWTAuthentication):
             current_user = request.user
             user_cache_key = 'last_seen_%s' % current_user.username
             cache.set(user_cache_key, now, settings.USER_LASTSEEN_TIMEOUT)
-        else:
-            last_seen = cache.get('status')
-            if last_seen and (now - last_seen) > timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
-                # Пользователь неактивен в течение USER_ONLINE_TIMEOUT секунд, переводим его в оффлайн
-                cache.set('status', now, settings.USER_LASTSEEN_TIMEOUT)
-                if request.COOKIES.get('sessionid'):
-                    # Работа с сессиями, если необходимо
-                    pass
-            else:
-                cache.set('status', now, settings.USER_LASTSEEN_TIMEOUT)
         return response

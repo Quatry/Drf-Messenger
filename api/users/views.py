@@ -36,18 +36,18 @@ class StatusUserAPIView(APIView):
     """
     Информация о статусе пользователя (online/offline)
     """
-
     def get(self, request, username, format=None):
         user_cache_key = 'last_seen_%s' % username
         last_seen = cache.get(user_cache_key)
-        print(user_cache_key, last_seen)
         if last_seen:
             if (datetime.now() - last_seen) < timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
                 user_status = 'online'
+                data = {'username': username, 'status': user_status}
+                return Response(data=data, status=status.HTTP_200_OK)
             else:
                 user_status = 'offline'
+                data = {'username': username, 'status': user_status, 'last_seen': last_seen}
+                return Response(data=data, status=status.HTTP_200_OK)
         else:
-            user_status = 'offline'
-
-        data = {'username': username, 'status': user_status, 'last_seen': last_seen}
-        return Response(data=data, status=status.HTTP_200_OK)
+            data = {'username': username, 'status': 'offilne', 'last_seen': 'Более недели назад'}
+            return Response(data=data, status=status.HTTP_200_OK)
