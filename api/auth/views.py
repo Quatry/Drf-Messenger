@@ -46,50 +46,50 @@ class RegisterAPIView(generics.CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginAPIView(APIView):
-    """
-    Логин
-    """
-    serializer_class = LoginSerializer
-    permission_classes = [AllowAny, ]
-
-    def post(self, request):
-
-        data = request.data
-
-        username = data.get('username', None)
-
-        password = data.get('password', None)
-
-        if username is None or password is None:
-            return Response({'error': 'Нужен и логин, и пароль'},
-
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        user = authenticate(username=username, password=password)
-
-        if user is None:
-            return Response({'error': 'Неверные данные'},
-
-                            status=status.HTTP_401_UNAUTHORIZED)
-
-        refresh = RefreshToken.for_user(user)
-
-        refresh.payload.update({
-
-            'user_id': str(user.id),
-
-            'username': user.username
-
-        })
-
-        return Response({
-
-            'refresh': str(refresh),
-
-            'access': str(refresh.access_token),
-
-        }, status=status.HTTP_200_OK)
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+# class LoginAPIView(APIView):
+#     """
+#     Логин
+#     """
+#     serializer_class = LoginSerializer
+#     permission_classes = [AllowAny, ]
+#
+#     def post(self, request):
+#
+#         data = request.data
+#
+#         username = data.get('username', None)
+#
+#         password = data.get('password', None)
+#
+#         if username is None or password is None:
+#             return Response({'error': 'Нужен и логин, и пароль'},
+#
+#                             status=status.HTTP_400_BAD_REQUEST)
+#
+#         user = authenticate(username=username, password=password)
+#
+#         if user is None:
+#             return Response({'error': 'Неверные данные'},
+#
+#                             status=status.HTTP_401_UNAUTHORIZED)
+#
+#         refresh = RefreshToken.for_user(user)
+#
+#         refresh.payload.update({
+#
+#             'user_id': str(user.id),
+#
+#             'username': user.username
+#
+#         })
+#
+#         return Response({
+#
+#             'refresh': str(refresh),
+#
+#             'access': str(refresh.access_token),
+#
+#         }, status=status.HTTP_200_OK)
+#
+# class MyTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = MyTokenObtainPairSerializer

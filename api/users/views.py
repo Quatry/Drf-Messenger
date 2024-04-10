@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.core.cache import cache
 from django_redis import get_redis_connection
 from rest_framework import status, generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -31,6 +31,10 @@ class UserInfoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+class UserListAPIView(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly,]
 
 class StatusUserAPIView(APIView):
     """

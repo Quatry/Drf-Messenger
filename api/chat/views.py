@@ -52,3 +52,14 @@ class ChatRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         serializer = MessageSerializer(message, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class UserChatListAPIView(generics.ListAPIView):
+    lookup_field = 'username'
+    queryset = Chat.objects.all()
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = ChatSerializer
+
+    def list(self, request, *args, **kwargs):
+        member = ChatMember.objects.filter(user=request.user.id).order_by('date_joined').all()
+        serializer_member = ChatMemberSerializer(member, many=True)
+        return Response(serializer_member.data, status=status.HTTP_200_OK)
