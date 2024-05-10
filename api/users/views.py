@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from api.models import CustomUser
 from api.users.serializers import CustomUserSerializer
-from socialnet import settings
+from config.settings import USER_ONLINE_TIMEOUT
 
 redis_conn = get_redis_connection("default")
 
@@ -31,20 +31,22 @@ class UserInfoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 class UserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+
 
 class StatusUserAPIView(APIView):
     """
     Информация о статусе пользователя (online/offline)
     """
-    def get(self, request, username, format=None):
+    def get(self, request, username):
         user_cache_key = 'last_seen_%s' % username
         last_seen = cache.get(user_cache_key)
         if last_seen:
-            if (datetime.now() - last_seen) < timedelta(seconds=settings.USER_ONLINE_TIMEOUT):
+            if (datetime.now() - last_seen) < timedelta(seconds=USER_ONLINE_TIMEOUT):
                 user_status = 'online'
                 data = {'username': username, 'status': user_status}
                 return Response(data=data, status=status.HTTP_200_OK)
@@ -55,3 +57,6 @@ class StatusUserAPIView(APIView):
         else:
             data = {'username': username, 'status': 'offilne', 'last_seen': 'Более недели назад'}
             return Response(data=data, status=status.HTTP_200_OK)
+
+
+

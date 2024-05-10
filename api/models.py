@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-
 class CustomUserManager(BaseUserManager):
     """
     Django требует, чтобы кастомные пользователи определяли свой собственный
@@ -56,7 +55,6 @@ class CustomUser(AbstractUser):
     def __str__(self):
         """ Строковое представление модели (отображается в консоли) """
         return self.username
-
 
 
 class Chat(models.Model):

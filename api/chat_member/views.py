@@ -19,6 +19,7 @@ class ChatMembersListAPI(generics.ListAPIView):
         serializer = ChatMemberSerializer(chat_members, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class ChatMemberRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
     """
     Получить/удалить участника чата
@@ -31,6 +32,7 @@ class ChatMemberRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
         chat_member = ChatMember.objects.get(id=pk)
         serializer = ChatMemberSerializer(chat_member, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class ChatMemberListCreateAPIView(generics.ListCreateAPIView):
     """
