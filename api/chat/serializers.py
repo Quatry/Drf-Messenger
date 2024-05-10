@@ -4,6 +4,6 @@ from api.models import Chat
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    class Meta():
+    class Meta:
         model = Chat
         fields = '__all__'
