@@ -48,9 +48,12 @@ class ChatRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request, pk):
-        message = Message.objects.filter(chat=pk)
-        serializer = MessageSerializer(message, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        chat_member = ChatMember.objects.filter(user=request.user, chat=pk).first()
+        if chat_member:
+            message = Message.objects.filter(chat=pk)
+            serializer = MessageSerializer(message, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class UserChatListAPIView(generics.ListAPIView):
